@@ -12,6 +12,8 @@ export const connect = function ()  {
 
     const connectionString = "mongodb://" + MONGO_USER + ":" + encodeURIComponent(MONGO_PASSWORD) + "@" + MONGO_HOST + ":" + MONGO_PORT + "/" + MONGO_DB;
 
+    // TODO: Set up a promise response
+
     mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
         //don't show the log when it is test
         if (process.env.NODE_ENV !== "test") {

@@ -7,7 +7,8 @@ import cors from 'cors';
 
 import { connect } from './utils/db';
 import indexRouter from './routes/index';
-import usersRouter from './routes/users';
+import visitsRouter from './routes/visits';
+import * as apiResponse from  './helpers/apiResponse';
 
 
 
@@ -22,11 +23,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/visits', visitsRouter);
 
 // throw 404 if URL not found
 app.all("*", function (req, res) {
-    return apiResponse.notFoundResponse(res, "Page not found yo!");
+    return apiResponse.NotFoundResponse(res, "Page not found yo!");
 });
 
 export default app;
