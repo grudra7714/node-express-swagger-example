@@ -15,6 +15,15 @@ import * as apiResponse from  './v1/helpers/apiResponse';
 // Set up db connection 
 connect();
 
+if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+        if (req.header('x-forwarded-proto') !== 'https')
+            res.redirect(`https://${req.header('host')}${req.url}`)
+        else
+            next()
+    })
+}
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec, { explorer: true}));
 
 app.use(cors())
