@@ -1,19 +1,21 @@
 import express from 'express';
 var app = express(); // Start the express server
-import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import path from 'path';
+import spec from './v1/swagger';
+import swaggerUi from 'swagger-ui-express';
 
 import { connect } from './v1/utils/db';
 import indexRouter from './v1/routes/index';
 import visitsRouter from './v1/routes/visits';
 import * as apiResponse from  './v1/helpers/apiResponse';
 
-
-
 // Set up db connection 
 connect();
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec, { explorer: true}));
 
 app.use(cors())
 app.use(logger('dev'));

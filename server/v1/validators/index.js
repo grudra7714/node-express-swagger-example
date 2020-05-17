@@ -24,7 +24,7 @@ export const validators = {
 
                     ],
 
-                    // Or just visitedId should be present
+                    // Or just visitId should be present
                     query("visitId", "visitId parameter must be present").isLength({ min: 1 }).trim(),
 
                 ],

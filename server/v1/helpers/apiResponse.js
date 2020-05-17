@@ -23,9 +23,9 @@ export const ErrorResponse = function (res, status=0, msg) {
     return res.status(500).json(data);
 };
 
-export const NotFoundResponse = function (res, status=0, msg) {
+export const NotFoundResponse = function (res, msg) {
     var data = {
-        status: status,
+        status: 404,
         message: msg,
     };
     return res.status(404).json(data);

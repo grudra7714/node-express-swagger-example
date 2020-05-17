@@ -1,7 +1,9 @@
+import mongoose from 'mongoose';
+import FuzzySearch from 'fuzzy-search';
 import Visit from '../models/VisitModel';
 import UserVisitTrack from '../models/UserVisitsTrackModel';
 import { validationResult } from 'express-validator';
-import { ValidationErrorWithData } from '../../helpers/apiResponse';
+import { ValidationErrorWithData, ErrorResponse, NotFoundResponse } from '../../helpers/apiResponse';
 
 
 /**
@@ -21,17 +23,97 @@ export default class VisitController {
      * @param {Object} res 
      */
 
-    get(req, res) {
+    async get(req, res) {
         // Check parameter validation
-        console.log(req.query)
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return ValidationErrorWithData(res, 422, "Validation Error", errors.array())
         }        
 
-        res.send("Inside get visitcontroller");
+        // check if visitId is present
+        let {visitId, userId, searchString} = req.query;
 
+        if(visitId) {
+
+            try {
+
+
+                if (!mongoose.Types.ObjectId.isValid(visitId)) {
+                    return ValidationErrorWithData(res, 422, "Validation error", "ID Does is not of type ObjectId");
+                }
+
+                // Find by visitId
+                let getLocations = await Visit.find(
+                    { _id: visitId },
+                )
+
+                if (!getLocations || (getLocations.length == 0)) {
+                    return NotFoundResponse(res, "No data found correspoding to the visitId");
+                }
+
+                let payload = [];
+
+                // Response payload
+                //  [{ userId: “user1”, name: “McDonald’s”, visitId: “some-visit-id-1” }]
+
+                getLocations.forEach( (item) => {
+                    payload.push({
+                        userId: item.userId,
+                        name: item.name,
+                        visitId: item._id,
+                    })
+                })
+
+                // Note: An improvement over here could be to allow pagination instead of sending all the payload
+
+                res.json(payload);
+
+            } catch(e) {
+                return ErrorResponse(res, 403, "Error occured while retreving information", e);
+            }
+
+        } else {
+            // This case will cover userId, searchString query params
+            // This else block also runs under the assumption that the validators functions are written according to requirement
+
+
+            let getLocations = await UserVisitTrack.findOne(
+                { userId: userId },
+                // Get top 5 elements per the spec below
+                // A string which is attempted to be matched over the 5 most recent locations the user has visited. The matching should be fuzzy, and case insensitive
+                { locations: { $slice: 5}}
+
+            )
+            
+            if (!getLocations  || (getLocations.length == 0)) {
+                return NotFoundResponse(res, "No data found correspoding to the userId");
+            }
+
+            const searcher = new FuzzySearch(getLocations.locations, ['name']);            
+            var matchedLocations = searcher.search(searchString);
+
+            if(matchedLocations.length == 0) {
+                // Return an empty response if nothing is found
+                res.json([])
+            } else {
+
+                var payload = [];
+                // Response payload
+                //  [{ userId: “user1”, name: “McDonald’s”, visitId: “some-visit-id-1” }]
+                matchedLocations.forEach((item) => {
+                    payload.push({
+                        userId: userId,
+                        name: item.name,
+                        visitId: item.visitId,
+                    })
+                })
+
+                res.json(payload);
+            }
+
+
+        }
     }
 
     /**
@@ -82,7 +164,8 @@ export default class VisitController {
 
         let savedObject = {
             name: req.body.name,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            visitId: visitRes._id,            
         };
 
         await UserVisitTrack.update(
