@@ -1,6 +1,7 @@
 export default 
 {
-    "openapi": "3.0.2",
+    "swagger": "3.0",
+    "openapi": "3.0.0",
     "info": {
         "description": "This is a sample node-express-swagger application",
         "version": "1.0.0",
@@ -14,6 +15,8 @@ export default
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
+    "host": "localhost:3000",
+    "basePath": "/api",
     "tags": [
         {
             "name": "visit",
@@ -31,16 +34,6 @@ export default
                 "url": "http://swagger.io"
             }
         }
-    ],
-    "servers": [
-        {
-            "url": "https://node-express-swagger.herokuapp.com/v1",
-            "description": "Prod server"
-        },
-        {
-            "url": "http://localhost:3000/v1",
-            "description": "Staging server"
-        },
     ],
     "schemes": [
         "https"

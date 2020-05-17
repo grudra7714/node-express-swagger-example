@@ -8,12 +8,16 @@ import spec from './v1/swagger';
 import swaggerUi from 'swagger-ui-express';
 
 import { connect } from './v1/utils/db';
+import { getClient } from './v2/utils/db';
 import indexRouter from './v1/routes/index';
-import visitsRouter from './v1/routes/visits';
+import visitsRouterV1 from './v1/routes/visits';
+import visitsRouterV2 from "./v2/routes/visits";
 import * as apiResponse from  './v1/helpers/apiResponse';
 
-// Set up db connection 
+// Set up db connection for v1 api
 connect();
+// Set up connection for v2 api
+getClient();
 
 if (process.env.NODE_ENV === 'production') {
     app.use((req, res, next) => {
@@ -34,7 +38,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
-app.use('/visit', visitsRouter);
+app.use('/v1/visit', visitsRouterV1);
+app.use('/v2/visit', visitsRouterV2);
 
 // throw 404 if URL not found
 app.all("*", function (req, res) {
