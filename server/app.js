@@ -4,7 +4,8 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import path from 'path';
-import spec from './v1/swagger';
+import specV1 from './v1/swagger';
+import specV2 from './v2/swagger';
 import swaggerUi from 'swagger-ui-express';
 
 import { connect } from './v1/utils/db';
@@ -28,7 +29,8 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec, { explorer: true}));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specV1, { explorer: true}));
+app.use('/api-docs-v2', swaggerUi.serve, swaggerUi.setup(specV2, { explorer: true }));
 
 app.use(cors())
 app.use(logger('dev'));

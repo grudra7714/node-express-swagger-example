@@ -15,8 +15,6 @@ export default
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "host": "localhost:3000",
-    "basePath": "/api",
     "tags": [
         {
             "name": "visit",
@@ -34,6 +32,16 @@ export default
                 "url": "http://swagger.io"
             }
         }
+    ],
+    "servers": [
+        {
+            "url": "https://node-express-swagger.herokuapp.com/v2",
+            "description": "Prod redis server"
+        },
+        {
+            "url": "http://localhost:3000/v2",
+            "description": "Staging server"
+        },
     ],
     "schemes": [
         "https"
