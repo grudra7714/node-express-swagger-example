@@ -24,9 +24,22 @@ export default class VisitController {
     get(req, res) {
         // Check parameter validation
         console.log(req.query)
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return ValidationErrorWithData(res, 422, "Validation Error", errors.array())
+        }        
+
         res.send("Inside get visitcontroller");
 
     }
+
+    /**
+     *
+     *
+     * @param {Object} req
+     * @param {Object} res
+     */
 
     async post(req, res) {
         

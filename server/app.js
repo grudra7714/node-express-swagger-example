@@ -5,10 +5,10 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 
-import { connect } from './utils/db';
-import indexRouter from './routes/index';
-import visitsRouter from './routes/visits';
-import * as apiResponse from  './helpers/apiResponse';
+import { connect } from './v1/utils/db';
+import indexRouter from './v1/routes/index';
+import visitsRouter from './v1/routes/visits';
+import * as apiResponse from  './v1/helpers/apiResponse';
 
 
 
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
-app.use('/visits', visitsRouter);
+app.use('/visit', visitsRouter);
 
 // throw 404 if URL not found
 app.all("*", function (req, res) {

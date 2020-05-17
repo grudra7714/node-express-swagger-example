@@ -6,7 +6,7 @@ const visitController = new VisitController();
 
 var router = express.Router();
 
-router.get('/', visitController.get);
-router.post('/', validators["visits"]["POST"], visitController.post);
+router.get('/', validators["visit"]["GET"], visitController.get);
+router.post('/', validators["visit"]["POST"], visitController.post);
 
 export default router;
