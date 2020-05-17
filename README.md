@@ -15,6 +15,21 @@ Simple application for demonstrating swagger integration with node.js
 3. Create an `.env` file and add the following contents
 
 ```
-MONGODB_URL=<mongo_db_url>
+MONGO_HOST=<host>
+MONGO_PORT=<port>
+MONGO_DB=<db-name>
+MONGO_USER=<user>
+MONGO_PASSWORD=<password>
 ```
 
+# API
+
+There are 2 versions
+
+- v1 
+- v2 (In Development)
+
+`v1` version uses MongoDB backend.
+The docs for this api can be found [here](https://node-express-swagger.herokuapp.com/api-docs)
+
+`v2` version will use redis instead of MongoDB.
