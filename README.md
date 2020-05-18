@@ -29,7 +29,9 @@ There are 2 versions
 - v1 
 - v2 (In Development)
 
-`v1` version uses MongoDB backend.
+* `v1` version uses MongoDB backend.
 The docs for this api can be found [here](https://node-express-swagger.herokuapp.com/api-docs)
 
-`v2` version will use redis instead of MongoDB.
+
+* For v2 (Redis DB)
+https://node-express-swagger.herokuapp.com/api-docs-v2
