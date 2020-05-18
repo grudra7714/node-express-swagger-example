@@ -27,11 +27,13 @@ MONGO_PASSWORD=<password>
 There are 2 versions
 
 - v1 
-- v2 (In Development)
+- v2 
 
-* `v1` version uses MongoDB backend.
+v1 and v2 are created only for performance reasons. Ideally for high traffic sites, we should use a combination of v1 and v2 endpoints.
+
+* `v1` version uses MongoDB.
 The docs for this api can be found [here](https://node-express-swagger.herokuapp.com/api-docs)
 
 
-* For v2 (Redis DB)
+* `v2` version uses Redis.
 https://node-express-swagger.herokuapp.com/api-docs-v2
