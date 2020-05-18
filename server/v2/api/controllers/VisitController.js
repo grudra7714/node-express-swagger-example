@@ -37,7 +37,8 @@ export default class VisitController {
         if(visitId) {
 
             try {
-                let order = redisClient.get('visit-' + visitId)
+                let order = redisClient.get('visit-' + visitId);
+                // Data received, parse it for processing
                 order.then( (data) => {
                     let collection = JSON.parse(data);
                     delete collection.updatedAt;
@@ -52,17 +53,18 @@ export default class VisitController {
             // This else block also runs under the assumption that the validators functions are written according to requirement
             let order = redisClient.zrevrange('locations-userId-' + userId,  0,  -1)
 
-            // TODO: Implement error handling here
             order.then((data) => {
 
                 let payload = []
                 
+                // Data received, parse it for processing
                 data.forEach( (item) => { 
                     var obj = JSON.parse(item);
                     obj.userId = userId; 
                     payload.push(obj); 
                 })
 
+                // This will return case insensive matched results
                 const searcher = new FuzzySearch(payload, ['name']);
                 var matchedLocations = searcher.search(searchString);
 
@@ -72,6 +74,9 @@ export default class VisitController {
                 } else {
                     res.json(matchedLocations);
                 }
+            })
+            .catch((e) => {
+                return ErrorResponse(res, 403, "Error occured while retreving information", e);
             })
 
         }
@@ -110,6 +115,7 @@ export default class VisitController {
             name: req.body.name,
         };
 
+        // Create a sorted listed of user's locations. Its beneficial during retrieval 
         redisClient.zadd("locations-userId-" + req.body.userId, Date.now(), JSON.stringify(payloadForQuickAccess))
         res.json({ visitId: visitId})
     }

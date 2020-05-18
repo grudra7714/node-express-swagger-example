@@ -120,5 +120,5 @@ typings/
 .env.example
 package-lock.json
 
-Questions.md
+Notes.md
 .vercel
