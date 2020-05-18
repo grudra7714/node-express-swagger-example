@@ -15,11 +15,19 @@ Simple application for demonstrating swagger integration with node.js
 3. Create an `.env` file and add the following contents
 
 ```
+
+For V1
 MONGO_HOST=<host>
 MONGO_PORT=<port>
 MONGO_DB=<db-name>
 MONGO_USER=<user>
 MONGO_PASSWORD=<password>
+
+For V2
+REDIS_HOST=redis-<redis_host>
+REDIS_PORT=<redis_port>
+REDIS_PASSWORD=<redis_password>
+
 ```
 
 # API
